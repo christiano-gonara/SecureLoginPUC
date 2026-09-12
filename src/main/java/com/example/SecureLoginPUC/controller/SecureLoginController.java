@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -45,14 +46,25 @@ public class SecureLoginController {
     }
 
     @PostMapping("/register")
-    public String handleRegister(
+    public String handleRegister(Model model,
             @RequestParam("nome") String nome,
             @RequestParam("email") String email,
             @RequestParam("cpf") String cpf,
             @RequestParam("rg") String rg,
             @RequestParam("endereco") String endereco,
             @RequestParam("instituicao") String instituicao,
-            @RequestParam("senha") String senha) {
+            @RequestParam("senha") String senha,
+            @RequestParam("confirmacao") String confirmacao) {
+
+        // Validações de cadastro
+        if (!senha.equals(confirmacao)) {
+            model.addAttribute("erro", "As senhas não coincidem.");
+            return "register";
+        }
+        if (userDetailsManager.userExists(email)) {
+            model.addAttribute("erro", "Este e-mail já está cadastrado.");
+            return "register";
+        }
 
         // Salva o usuário no "armazém" com o email como usuário de login
         userDetailsManager.createUser(
