@@ -62,7 +62,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    public InMemoryUserDetailsManager userDetailsService() {
         UserDetails user = User.builder()
                 .username(userConfig.getUserUsername())
                 .password(passwordEncoder().encode(userConfig.getUserPassword())) // Codificar a senha

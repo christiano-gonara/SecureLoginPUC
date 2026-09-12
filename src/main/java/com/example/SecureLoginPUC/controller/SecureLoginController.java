@@ -4,9 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Controller
 public class SecureLoginController {
+
+    private final InMemoryUserDetailsManager userDetailsManager;
+    private final PasswordEncoder passwordEncoder;
+
+    public SecureLoginController(InMemoryUserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder) {
+        this.userDetailsManager = userDetailsManager;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping("/login")
     public String login() {
@@ -43,12 +54,15 @@ public class SecureLoginController {
             @RequestParam("instituicao") String instituicao,
             @RequestParam("senha") String senha) {
 
-        // Aqui você pode adicionar lógica para salvar os dados do usuário, por exemplo:
-        // userService.saveUser(new User(nome, email, cpf, rg, endereco, instituicao, senha));
+        // Salva o usuário no "armazém" com o email como usuário de login
+        userDetailsManager.createUser(
+            User.withUsername(email)                    // 1
+                .password(passwordEncoder.encode(senha)) // 2  BCrypt: texto vira hash
+                .roles("USER")                          // 3  perfil padrão
+                .build()
+        );
 
-        // Redirecionar ou exibir uma mensagem de sucesso
-        System.out.println("Registro: Redirecionado para a página de login.");
-        return "redirect:/login"; // Após o registro, redirecionar para a página de login
+        return "redirect:/login";
     }
 
     @GetMapping("/recoverpassword")
@@ -63,8 +77,6 @@ public class SecureLoginController {
         // Aqui você pode adicionar lógica para recuperar a senha.
         // userService.recoverPassword(email);
 
-        // Redirecionar ou exibir uma mensagem de sucesso
-        System.out.println("Recuperação de E-mail: Redirecionado para a página de login.");
-        return "redirect:/login"; // Após a recuperação de senha, redirecionar para a página de login
+        return "redirect:/login";
     }
 }
