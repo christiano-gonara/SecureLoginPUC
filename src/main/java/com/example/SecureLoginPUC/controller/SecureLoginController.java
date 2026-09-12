@@ -56,24 +56,25 @@ public class SecureLoginController {
             @RequestParam("senha") String senha,
             @RequestParam("confirmacao") String confirmacao) {
 
-        
-        // o e-mail precisa ter "@" e um ponto (.".)
-        if (!email.contains("@") || !email.contains(".")){
+        // Valida e-mail: precisa ter "@" e um "."
+        if (!email.contains("@") || !email.contains(".")) {
             model.addAttribute("erro", "E-mail inválido.");
             return "register";
         }
 
-        // A senha precisa ter pelo menos 8 caracteres
+        // Valida senha: tamanho mínimo
         if (senha.length() < 8) {
             model.addAttribute("erro", "A senha deve ter pelo menos 8 caracteres.");
             return "register";
         }
 
-        // Validações de cadastro
+        // Confirma que a senha bate com a confirmação
         if (!senha.equals(confirmacao)) {
             model.addAttribute("erro", "As senhas não coincidem.");
             return "register";
         }
+
+        // Usuário/e-mail já cadastrado?
         if (userDetailsManager.userExists(email)) {
             model.addAttribute("erro", "Este e-mail já está cadastrado.");
             return "register";
@@ -81,9 +82,9 @@ public class SecureLoginController {
 
         // Salva o usuário no "armazém" com o email como usuário de login
         userDetailsManager.createUser(
-            User.withUsername(email)                    // 1
+            User.withUsername(email)                     // 1
                 .password(passwordEncoder.encode(senha)) // 2  BCrypt: texto vira hash
-                .roles("USER")                          // 3  perfil padrão
+                .roles("USER")                           // 3  perfil padrão
                 .build()
         );
 
@@ -96,12 +97,17 @@ public class SecureLoginController {
     }
 
     @PostMapping("/recoverpassword")
-    public String handleRecoverPassword(
-            @RequestParam("email") String email) {
+    public String handleRecoverPassword(Model model, @RequestParam("email") String email) {
 
-        // Aqui você pode adicionar lógica para recuperar a senha.
-        // userService.recoverPassword(email);
+        // [VERSÃO DE ESTUDO] simula o envio do link — imprime no terminal do app
+        if (userDetailsManager.userExists(email)) {
+            System.out.println("[RECUPERAR] Link de redefinição para " + email
+                    + " -> http://localhost:8080/recoverpassword?reset=DEMO-" + email);
+        }
 
-        return "redirect:/login";
+        // Mensagem genérica de propósito (não revela se o e-mail existe — evita "caça" de contas)
+        model.addAttribute("mensagem",
+                "Se este e-mail estiver cadastrado, enviaremos um link de redefinição.");
+        return "recoverpassword";
     }
 }
