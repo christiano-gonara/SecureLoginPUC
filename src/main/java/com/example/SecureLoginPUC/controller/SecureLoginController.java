@@ -56,6 +56,19 @@ public class SecureLoginController {
             @RequestParam("senha") String senha,
             @RequestParam("confirmacao") String confirmacao) {
 
+        
+        // o e-mail precisa ter "@" e um ponto (.".)
+        if (!email.contains("@") || !email.contains(".")){
+            model.addAttribute("erro", "E-mail inválido.");
+            return "register";
+        }
+
+        // A senha precisa ter pelo menos 8 caracteres
+        if (senha.length() < 8) {
+            model.addAttribute("erro", "A senha deve ter pelo menos 8 caracteres.");
+            return "register";
+        }
+
         // Validações de cadastro
         if (!senha.equals(confirmacao)) {
             model.addAttribute("erro", "As senhas não coincidem.");
