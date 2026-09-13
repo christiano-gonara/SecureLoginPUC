@@ -1,155 +1,133 @@
-# Projeto SecureLoginPUC
+# 🔐 SecureLoginPUC
 
-## Descrição
-O SecureLoginPUC é um projeto de aplicação web que implementa um sistema de login seguro utilizando Spring Boot e Spring Security. O objetivo é permitir a autenticação de usuários, diferenciando entre usuários comuns e administradores, e garantindo o acesso apropriado às páginas da aplicação.
+Sistema de **autenticação e cadastro de usuários** com interface web, desenvolvido com **Spring Boot**, **Thymeleaf** e **Spring Security**.
 
-## Estrutura do Projeto
+![Capa](imgs/capa.png)
+
+## 👥 Integrantes
+
+- **Christiano Gonçalves Araujo**
+- **Larissa Fineli**
+
+---
+
+## 🎯 Objetivo
+
+Implementar uma aplicação web completa com tela de login, cadastro de novos usuários e recuperação de senha, com **senhas armazenadas de forma segura** (hash BCrypt) e **controle de acesso por perfil** (usuário comum e administrador).
+
+## ✨ Funcionalidades
+
+- 🔑 Login e logout (Spring Security)
+- 👤 Cadastro de novos usuários
+- ✅ Validações de cadastro (e-mail, senha, confirmação e duplicidade)
+- 🚪 Controle de acesso por perfil (USER / ADMIN)
+- 🔒 Senhas com hash BCrypt
+- ✉️ Recuperação de senha (versão de estudo, com link no console)
+- 🎨 Interface visual própria com Thymeleaf
+
+![Fluxo do sistema](imgs/demo-video.gif)
+
+---
+
+## 🛠️ Tecnologias
+
+- **Java 25** (LTS)
+- **Spring Boot 4.1.1**
+- Spring Security + Spring MVC
+- **Thymeleaf**
+- BCrypt (criptografia de senhas)
+- Maven (com Maven Wrapper)
+
+## 📁 Estrutura do projeto
 
 ```
-SecureLoginPUC
-│
-├── src
-│   └── main
-│       ├── java
-│       │   └── com.example.SecureLoginPUC
-│       │       ├── application
-│       │       │   └── SecureLoginPUCApplication.java
-│       │       ├── config
-│       │       │   ├── SecurityConfig.java
-│       │       │   └── UserConfig.java
-│       │       └── controller
-│       │           └── SecureLoginPUCController.java
-│       └── resources
-│           ├── application.properties
-│           ├── static
-│           │   ├── css
-│           │   │   ├── login.css
-│           │   │   ├── register.css
-│           │   │   └── style.css
-│           │   └── images
-│           │       └── logo-puc-minas.png
-│           └── templates
-│               ├── admin.html
-│               ├── error.html
-│               ├── home.html
-│               ├── login.html
-│               ├── recoverpassword.html
-│               └── register.html
-
+src/main/
+├── java/com/example/SecureLoginPUC/
+│   ├── application/          # SecureLoginPUCApplication
+│   ├── config/               # SecurityConfig e UserConfig
+│   └── controller/           # SecureLoginController
+└── resources/
+    ├── static/
+    │   ├── css/              # login.css (tema visual)
+    │   └── images/           # logos e previews
+    └── templates/            # login, register, recoverpassword, home, admin, error
 ```
 
-## Configuração do application.properties
+---
 
-```properties
-spring.application.name=SecureLoginPUC
-app.user.username=joao
-app.user.password=4321
-app.admin.username=admin
-app.admin.password=1234
+## ▶️ Como executar
+
+**Pré-requisitos**
+
+- JDK 25 (LTS) — [Temurin 25](https://adoptium.net)
+- Maven (ou use o **Maven Wrapper** do projeto, que baixa a versão certa)
+
+**Passos**
+
+```bash
+# 1. Compilação / testes
+./mvnw clean compile
+
+# 2. Subir a aplicação
+./mvnw spring-boot:run
 ```
 
-## Dependências
-```xml
-<!-- Dependência do Spring Boot Test -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-test</artifactId>
-    <scope>test</scope>
-</dependency>
+Depois acesse: <http://localhost:8080/login>
 
-<!-- Dependência do Spring Security -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-security</artifactId>
-</dependency>
+---
 
-<!-- Dependência do Thymeleaf para o Spring Boot -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-thymeleaf</artifactId>
-</dependency>
-```
+## 🌐 Endpoints
 
-# Thymeleaf
+| Método | Endpoint           | Descrição                                      | Acesso              |
+| ------ | ------------------ | ---------------------------------------------- | ------------------- |
+| `GET`  | `/login`           | Exibe a tela de login                          | Público             |
+| `POST` | `/login`           | Processa a autenticação (Spring Security)      | Público             |
+| `GET`  | `/register`        | Exibe a tela de cadastro                       | Público             |
+| `POST` | `/register`        | Processa o cadastro e cria o usuário           | Público             |
+| `GET`  | `/recoverpassword` | Exibe a tela de recuperação de senha           | Público             |
+| `POST` | `/recoverpassword` | Processa a solicitação de recuperação          | Público             |
+| `GET`  | `/home`            | Página inicial após login (usuário comum)      | Autenticado (USER)  |
+| `GET`  | `/admin`           | Página de administração                        | Autenticado (ADMIN) |
+| `GET`  | `/error`           | Página de erro (login inválido, etc.)           | Público             |
+| `POST` | `/logout`          | Encerra a sessão                               | Autenticado         |
 
-Thymeleaf é um motor de templates para Java que permite a criação de páginas HTML dinâmicas de forma simples e eficiente. Ele é frequentemente utilizado em aplicações Spring, proporcionando uma maneira intuitiva de gerar conteúdo HTML e manipular dados diretamente nas páginas.
+> Qualquer rota fora das listadas exige usuário autenticado.
 
-## Principais Características
+---
 
-- **Natural Templating**: Os templates Thymeleaf são válidos como documentos HTML, permitindo que sejam visualizados em navegadores sem processamento.
-- **Integração com Spring**: Thymeleaf se integra perfeitamente com o Spring Framework, facilitando a injeção de dependências e o acesso a beans do Spring.
-- **Expressões de Template**: Utiliza uma sintaxe simples e expressiva para manipular dados, permitindo a criação de lógicas condicionais e loops diretamente nas páginas.
+## 🔑 Credenciais iniciais (usuários fixos)
 
-## Exemplo de Uso
+Usuários pré-configurados no `application.properties`:
 
-Aqui está um exemplo simples de um template Thymeleaf:
+| Usuário | Senha | Perfil |
+| ------- | ----- | ------ |
+| `joao`  | `4321` | USER   |
+| `admin` | `1234` | ADMIN  |
 
-```html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Exemplo Thymeleaf</title>
-</head>
-<body>
-    <h1 th:text="${titulo}">Título do Documento</h1>
-    <ul>
-        <li th:each="item : ${itens}" th:text="${item}"></li>
-    </ul>
-</body>
-</html>
-```
+> 📝 Usuários criados pelo formulário de **cadastro** também conseguem logar (perfil USER padrão, senha armazenada com hash BCrypt).
 
-Neste exemplo, o título e a lista de itens são preenchidos dinamicamente com dados fornecidos pelo controlador Spring.
+## 🔒 Segurança
 
-Thymeleaf é uma escolha poderosa para desenvolvedores que desejam criar interfaces web dinâmicas e interativas em aplicações Java. Com sua sintaxe intuitiva e forte integração com o Spring, ele se tornou uma ferramenta popular no ecossistema de desenvolvimento Java.
+- Senhas **nunca** são armazenadas em texto puro — usam **BCrypt**.
+- O endpoint `POST /register` valida: e-mail válido, senha mínima de 8 caracteres, senhas coincidem e e-mail não duplicado.
+- Páginas de `/admin/**` são restritas ao perfil **ADMIN**.
 
-## Interface Gráfica
+## ➕ Recuperação de senha
 
-A interface gráfica permite ao usuário inserir seus dados de login e, após a autenticação, ser redirecionado para a página correspondente, onde terá acesso às funcionalidades e informações de acordo com suas credenciais.
+A recuperação está implementada na **versão de estudo**: ao informar um e-mail cadastrado, a aplicação imprime o **link de reset no console/terminal** do servidor e exibe uma mensagem genérica na tela (sem revelar se a conta existe, por segurança).
 
-### Captura de Tela
+> ⚠️ Em produção, integrar com um serviço real de e-mail (ex.: `JavaMailSender`) — e as **credenciais nunca devem ser publicadas** no repositório (usar variáveis de ambiente).
 
-- **Login**: A página de login possui campos para inserir o nome de usuário e a senha. Ela  também exibe o logo da PUC Minas, proporcionando uma identificação visual clara da instituição. Abaixo do formulário de login, existem links para os usuários que ainda não possuem cadastro, direcionando-os para a página de registro, e para aqueles que esqueceram a senha, levando-os à página de recuperação de senha.
+---
 
-| <img src="https://joaopauloaramuni.github.io/java-imgs/SecureLoginPUC/imgs/login_v2.png" alt="Login" width="1000"/> |
-|:----------------------------------------------------:|
-|                        Login                         |
+## 📸 Capturas de tela
 
-| <img src="https://joaopauloaramuni.github.io/java-imgs/SecureLoginPUC/imgs/registro_v2.png" alt="Registro" width="1000"/> |
-|:----------------------------------------------------------:|
-|                          Registro                          |
+Login | Cadastro | Recuperação
+------|----------|-------------
+![Login](src/main/resources/static/images/preview/login.png) | ![Cadastro](src/main/resources/static/images/preview/registro.png) | ![Recuperação](src/main/resources/static/images/preview/recupera.png)
 
-## Métodos da Classe SecurityConfig
+---
 
-### @Configuration
-Indica que a classe contém métodos de configuração que geram beans para o contexto da aplicação.
+## 📄 Licença
 
-### @EnableWebSecurity
-Ativa a segurança da web, permitindo a configuração de regras de segurança para as URLs da aplicação.
-
-### public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
-Configura as regras de segurança das requisições HTTP, permitindo o acesso público às páginas de login e arquivos CSS, restringindo o acesso às páginas do administrador.
-
-### public UserDetailsService userDetailsService()
-Configura o gerenciamento de usuários em memória, criando um usuário comum e um administrador, codificando as senhas.
-
-### public PasswordEncoder passwordEncoder()
-Define o codificador de senhas a ser utilizado na aplicação, utilizando o BCryptPasswordEncoder.
-
-## Urls do projeto:
-http://localhost:8080/login
-
-http://localhost:8080/login?logout=true
-
-http://localhost:8080/home
-
-http://localhost:8080/error
-
-http://localhost:8080/admin
-
-http://localhost:8080/register
-
-http://localhost:8080/recoverpassword
-
-## Licença
-Este projeto está licenciado sob a MIT License.
+Projeto acadêmico — uso educacional.

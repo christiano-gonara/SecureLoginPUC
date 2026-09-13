@@ -1,104 +1,4 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.login-container {
-    display: flex;
-    width: 80vw;
-    height: 80vh;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-    background-color: #FCFEFF;
-}
-
-.login-image-logo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    background-color: #1170b7;
-    border-radius: 10px 0 0 10px;
-}
-
-.login-image-logo-container img {
-    width: 100%;
-    max-width: 200px;
-    border-radius: 10px 0 0 10px;
-    object-fit: contain;
-}
-
-.login-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    padding: 2rem;
-    border-radius: 0 10px 10px 0;
-}
-
-.login-form input {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-.login-title {
-    color: gray;
-    text-align: center;
-    font-weight: bolder;
-    margin-bottom: 1rem;
-}
-
-.login-button-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1rem;
-}
-
-.login-button-container button {
-    width: 100%;
-    height: 5vh;
-    padding: 0.75rem;
-    background-color: #1170b7;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-.login-redirect-options {
-    text-align: center;
-    color: gray;
-    padding-top: 1rem;
-    font-weight: bolder;
-    font-size: small;
-}
-
-.login-redirect-options a {
-    color: #1170b7;
-    font-weight: bold;
-}
-
-.login-redirect-options a:first-child {
-    margin-left: 5px;
-}
-
-.login-redirect-options a:last-child {
-    color: #FF743C;
-    margin-left: 5px;
-}
+/* ===== Tema SecureLoginPUC (inspirado em Crextio) ===== */
 
 * {
     margin: 0;
@@ -106,3 +6,202 @@ body, html {
     box-sizing: border-box;
 }
 
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+    background: #ece7de;
+}
+
+/* Cartão principal com duas metades */
+.login-container {
+    display: flex;
+    width: min(900px, 94vw);
+    min-height: 560px;
+    border-radius: 36px;
+    overflow: hidden;
+    background: #fdf9f1;
+    box-shadow: 0 30px 70px rgba(80, 60, 20, 0.18);
+}
+
+/* ---------- Metade: formulário ---------- */
+.login-form {
+    flex: 1 1 0;
+    padding: 48px 52px;
+    background: linear-gradient(150deg, #ffffff 0%, #fdf5e3 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.back-link {
+    align-self: flex-start;
+    color: #a08a3f;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 14px;
+}
+
+.back-link:hover {
+    color: #8a6a1f;
+    text-decoration: underline;
+}
+
+.login-brand-mini {
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #8a6a1f;
+    margin-bottom: 28px;
+}
+
+.login-title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #202124;
+    margin-bottom: 6px;
+}
+
+.login-subtitle {
+    color: #8b8678;
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+}
+
+.login-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #55503f;
+    display: block;
+    margin: 10px 0 6px;
+}
+
+.login-form input,
+.login-form select {
+    width: 100%;
+    padding: 13px 18px;
+    border: 1px solid #eadfc8;
+    border-radius: 999px;
+    background: #ffffff;
+    font-size: 0.95rem;
+    color: #3b3b3b;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.login-form input:focus,
+.login-form select:focus {
+    border-color: #ffd300;
+    box-shadow: 0 0 0 3px rgba(255, 211, 0, 0.25);
+}
+
+.login-button-container {
+    margin-top: 22px;
+}
+
+.login-button-container button {
+    width: 100%;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 999px;
+    background: #ffd300;
+    color: #2b2a24;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.15s;
+}
+
+.login-button-container button:hover {
+    box-shadow: 0 10px 22px rgba(255, 200, 0, 0.45);
+    transform: translateY(-1px);
+}
+
+.login-redirect-options {
+    text-align: center;
+    color: #9a9282;
+    font-size: 0.8rem;
+    margin-top: 22px;
+    line-height: 1.6;
+}
+
+.login-redirect-options a {
+    color: #b58a00;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.login-redirect-options a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Metade: painel de identidade (logo da PUC) ---------- */
+.login-brand-panel {
+    flex: 1 1 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(160deg, #403a31 0%, #221f1a 100%);
+    isolation: isolate;
+}
+
+.login-brand-panel::before,
+.login-brand-panel::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.login-brand-panel::before {
+    width: 220px;
+    height: 220px;
+    top: -40px;
+    left: -40px;
+    background: radial-gradient(circle, rgba(255, 211, 0, 0.45), transparent 70%);
+}
+
+.login-brand-panel::after {
+    width: 260px;
+    height: 260px;
+    bottom: -60px;
+    right: -50px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.10), transparent 70%);
+}
+
+.login-brand-panel img {
+    width: 240px;
+    max-width: 80%;
+    display: block;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45));
+}
+
+.brand-slogan {
+    color: #fdf6e6;
+    font-size: 0.9rem;
+    max-width: 220px;
+    line-height: 1.5;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 720px) {
+    .login-container {
+        flex-direction: column;
+    }
+    .login-brand-panel {
+        min-height: 200px;
+    }
+    .login-form {
+        padding: 32px 24px;
+    }
+}
